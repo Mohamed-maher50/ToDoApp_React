@@ -1,10 +1,11 @@
 import React from "react";
-import { Todo } from "../../model/todo";
+
 import { motion } from "framer-motion";
 import SingleTodo from "../SingleTodo";
+import TaskType from "../../types/TaskType";
 interface Props {
-  todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  todos: TaskType[];
+  setTodos: React.Dispatch<React.SetStateAction<TaskType[]>>;
 }
 const TodoList: React.FC<Props> = ({ todos, setTodos }: Props) => {
   return (
@@ -20,7 +21,7 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }: Props) => {
       {todos.map((todo) => (
         <SingleTodo
           todo={todo}
-          key={todo.id}
+          key={todo._id}
           setTodos={setTodos}
           todos={todos}
         />
