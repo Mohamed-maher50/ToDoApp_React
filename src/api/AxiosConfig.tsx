@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
-axios.defaults.baseURL = "http://localhost:5000";
-console.log(import.meta.env.VITE_URL as string);
+axios.defaults.baseURL =
+  (import.meta.env.VITE_URL as string) || "http://localhost:5000";
 export const UpdateToken = (token: string) => {
   axios.defaults.headers.Authorization = `Bearer ${token}`;
 };
