@@ -1,8 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
-
 axios.defaults.baseURL = "http://localhost:5000";
-
+console.log(import.meta.env.VITE_URL as string);
 export const UpdateToken = (token: string) => {
   axios.defaults.headers.Authorization = `Bearer ${token}`;
 };
@@ -11,24 +10,29 @@ export const DeleteToken = () => {
 };
 // errorComposer will compose a handleGlobally function
 interface ErrorComposer {
-  errors: [
+  ValidationError?: [
     {
       msg: string;
-      felid: string;
     }
   ];
+
+  msg?: string;
 }
 const errorComposer = (error: AxiosError<ErrorComposer>) => {
   const statusCode = error.response ? error.response.status : null;
-
   if (statusCode === 400) {
-    if (error.response?.data) {
-      error.response.data.errors.map((err) =>
-        toast.error(err.msg, {
+    if (error.response?.data && error.response?.data?.ValidationError) {
+      error.response.data.ValidationError.map(({ msg }) =>
+        toast.error(msg, {
           theme: "dark",
         })
       );
     }
+  }
+  if (error.response?.data.msg) {
+    toast.error(error.response?.data.msg, {
+      theme: "dark",
+    });
   }
 };
 

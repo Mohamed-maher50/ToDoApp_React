@@ -54,7 +54,7 @@ const HomePage = () => {
             <MultiFormsProvider Forms={Forms}>
               <div className="flex mt-auto  justify-between my-3">
                 <PrevButton>Back</PrevButton>
-                <NextButton>create new Task</NextButton>
+                <NextButton> New Task</NextButton>
               </div>
             </MultiFormsProvider>
           </CardContainer>

@@ -50,7 +50,9 @@ const ShowTask = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           });
         });
       }
-      toggleTaskStatus(id)
+      updateTask(id, {
+        isDone: status as boolean,
+      })
         .then((res) => {})
         .catch((err) => {});
     };
@@ -69,6 +71,9 @@ const ShowTask = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
           return taskObj;
         });
       });
+    };
+    const onBlurInformationCard = () => {
+      setSelectedTask(null);
     };
     return (
       <div ref={ref} className={cn(className)} {...props}>
@@ -101,7 +106,10 @@ const ShowTask = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
                 x: "-200%",
               }}
             >
-              <TaskInformation {...selectedTask} />
+              <TaskInformation
+                {...selectedTask}
+                onBlur={onBlurInformationCard}
+              />
             </motion.div>
           ) : (
             <div className="grid gap-2">

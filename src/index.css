@@ -2,22 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-
-*{
-    @apply font-Roboto
+* {
+  @apply font-Roboto;
 }
 
 @layer utilities {
-    .scroll-nice::-webkit-scrollbar {
-           
-   
-            @apply w-2 bg-gray-300
-            /* Tailwind's bg-gray-200 equivalent */
-        }
-    
-        .scroll-nice::-webkit-scrollbar-thumb {
-            background-color: #4B5563;
-            /* Tailwind's gray-700 equivalent */
-        }
-  
+  .scroll-nice::-webkit-scrollbar {
+    @apply w-2 bg-gray-300
+            /* Tailwind's bg-gray-200 equivalent */;
+  }
+
+  .scroll-nice::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    /* Tailwind's gray-700 equivalent */
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animation-delay {
+  animation-delay: 4s;
 }

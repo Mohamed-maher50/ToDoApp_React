@@ -2,6 +2,7 @@ import * as Select from "@radix-ui/react-select";
 import { FC, forwardRef, HTMLAttributes, PropsWithChildren } from "react";
 import cn from "../utils/cn";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import ForEach from "../utils/ForEach";
 interface SelectProps {
   options: any[];
   onValueChange?: Function;
@@ -27,11 +28,14 @@ const SelectDemo: FC<SelectProps> = ({ options, onValueChange }) => (
           <FaChevronUp />
         </Select.ScrollUpButton>
         <Select.Viewport className="p-[5px]">
-          {options?.map((option) => (
-            <SelectItem key={option.id} value={option._id}>
-              {option.projectName}
-            </SelectItem>
-          ))}
+          <ForEach
+            items={options || []}
+            render={(option) => (
+              <SelectItem value={option._id} key={option._id}>
+                {option.projectName}
+              </SelectItem>
+            )}
+          />
         </Select.Viewport>
         <Select.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
           <FaChevronDown />

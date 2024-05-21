@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import {
+  FormEvent,
   forwardRef,
   HTMLAttributes,
   PropsWithChildren,
@@ -13,12 +14,13 @@ import { ProjectType } from "../../types/ProjectType";
 import cn from "../../utils/cn";
 import Input from "../Input";
 import { MdOutlineDone } from "react-icons/md";
-import { useSearchParams } from "react-router-dom";
-
 interface ProjectCardProps extends ProjectType {
   isActive?: boolean;
   onDelete: (id: string) => void;
-  onEdit?: (id: string, value: Partial<ProjectType>) => void;
+  onEdit?: (
+    id: string,
+    value: Partial<ProjectType>
+  ) => Promise<boolean | undefined>;
   onClick?: () => void;
 }
 const ProjectCard = forwardRef<
@@ -43,6 +45,21 @@ const ProjectCard = forwardRef<
       if (isEditAble) inputRef.current?.focus();
     }, [isEditAble]);
 
+    const handleSubmit = async (e: FormEvent) => {
+      e.preventDefault();
+
+      if (inputRef.current && inputRef.current.value != undefined && onEdit) {
+        const result = await onEdit(props._id, {
+          projectName: inputRef.current.value,
+        });
+
+        if (!result) {
+          inputRef.current.value = props.projectName;
+        }
+      }
+
+      if (isEditAble) setIsEditAble(false);
+    };
     return (
       <div
         ref={ref}
@@ -54,33 +71,23 @@ const ProjectCard = forwardRef<
           isActive && "bg-primary hover:bg-gray-800"
         )}
       >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-
-            if (inputRef.current?.value && onEdit)
-              onEdit(props._id, {
-                projectName: inputRef.current.value,
-              });
-
-            if (isEditAble) setIsEditAble(false);
-          }}
-          className="flex items-center"
-        >
+        <form onSubmit={handleSubmit} className="flex items-center w-full">
           <BsFillFolderFill />
           <Input
             ref={inputRef}
             defaultValue={props.projectName}
-            className={cn("h-5 bg-transparent shadow-none", isEditAble)}
+            className={cn("h-5 bg-transparent grow shadow-none", isEditAble)}
             disabled={!isEditAble}
           />
           <div className="flex items-center gap-2 text-gray-500">
             <button type={isEditAble ? "button" : "submit"}>
               {isEditAble ? (
-                <MdOutlineDone
-                  onClick={() => setIsEditAble(false)}
-                  className="text-gray-500"
-                />
+                <button type="submit">
+                  <MdOutlineDone
+                    onClick={() => setIsEditAble(false)}
+                    className="text-gray-500"
+                  />
+                </button>
               ) : (
                 <FaEdit
                   onClick={() => setIsEditAble(true)}
@@ -102,7 +109,5 @@ const ProjectCard = forwardRef<
     );
   }
 );
-
 export const ProjectCardWithMotion = motion(ProjectCard);
-
 export default ProjectCard;
